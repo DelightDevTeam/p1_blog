@@ -64,7 +64,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('admin.post.show', compact('post'));
     }
 
     /**
@@ -72,7 +73,10 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $categories = Category::all();
+
+        return view('admin.post.edit', compact('post', 'categories'));
     }
 
     /**
@@ -80,7 +84,31 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user_id = auth()->id();
+        $post = Post::findOrFail($id);
+        $imageName = null;
+
+        // delete old image
+        if ($request->hasFile('image')) {
+            $oldImage = $post->image;
+            if ($oldImage) {
+                unlink(public_path('images/' . $oldImage));
+            }
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+        }
+
+        
+        $post->update([
+            'id' => $id,
+            'title' => $request->title,
+            'category_id' => $request->category_id,
+            'content' => $request->content,
+            'image' => $imageName,
+            'user_id' => $user_id,
+            'status' => 1, // default to active, adjust as needed
+        ]);
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully');
     }
 
     /**
@@ -88,6 +116,8 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
     }
 }

@@ -7,12 +7,12 @@
             <div class="row">
                 <div class="col-lg-8">
                     <!-- Post content-->
-                     @if($posts->count() > 0)
-                     @foreach($posts as $post)
+                     
                     <article>
                         <!-- Post header-->
                         <header class="mb-4">
                             <!-- Post title-->
+                             <h1>Post Detail</h1>
                             <h1 class="fw-bolder mb-1">{{ $post->title }}</h1>
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">Posted on {{ $post->created_at->format('F d, Y') }} by {{ $post->user->name }}</div>
@@ -28,20 +28,16 @@
                         </section>
                         <div class="text-muted fst-italic mb-2">
                             <!-- detail -->
-                            <a href="{{ route('postsdetail.show', $post->id) }}" class="btn btn-primary">Read More</a>
+                            <a href="{{ route('user_home') }}" class="btn btn-primary">Back</a>
                         </div>
                     </article>
-                    @endforeach
-                    @else
-                    <p>No posts found</p>
-                    @endif
+                   
                     <!-- Comments section-->
                     <section class="mb-5">
-
+                        @include('layout_user.comment_section')
                     </section>
                 </div>
                 <!-- Side widgets-->
-                @include('layout_user.side_widget')
             </div>
         </div>
         <!-- Footer-->

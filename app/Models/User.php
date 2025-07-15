@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_picture'
     ];
 
     /**
@@ -42,4 +43,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Check if user is admin
+     */
+    public function getIsAdminAttribute()
+    {
+        // For now, you can set this based on email or role
+        // You can extend this with a proper roles system later
+        return in_array($this->email, ['admin@example.com']);
+    }
+
+    /**
+     * Get user's comments
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card shadow-lg border-0 rounded-lg">
                 <div class="card-body text-center">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=0D8ABC&color=fff&size=128" 
+                    <img src="{{ asset('profile_picture/' . $user->profile_picture) }}" 
                     class="rounded-circle mb-3" alt="Avatar">
                     <h2 class="card-title mb-1">{{ $user->name }}</h2>
                     <p class="text-muted mb-2">{{ $user->email }}</p>
@@ -21,6 +21,24 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Update Profile</h5>
+                    <!-- profile picture -->
+                    <form action="{{ route('updateProfile') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="profile_picture">Profile Picture</label>
+                            <input type="file" name="profile_picture" class="form-control">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
